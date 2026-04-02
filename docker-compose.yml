@@ -3,11 +3,15 @@ version: '3.8'
 services:
 
   web:
-    build: .
+    image: nginx:alpine
     ports:
       - "8080:80"
+    volumes:
+      - ./index.html:/usr/share/nginx/html/index.html
     depends_on:
       - db
+    networks:
+      - minha-rede
 
   db:
     image: mysql:5.7
@@ -16,3 +20,13 @@ services:
       MYSQL_DATABASE: meu_banco
     ports:
       - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - minha-rede
+
+networks:
+  minha-rede:
+
+volumes:
+  db_data:
